@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Utilities.Results.Abstract
+namespace Entities.DTOs.ProductDTOs
 {
-    public interface IDataResult<T> : IResult
+    public class ProductChangeStatusDTO
     {
-        T Data { get; }
+        public bool Status { get; set; }
     }
 }
