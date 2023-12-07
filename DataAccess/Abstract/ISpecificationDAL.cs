@@ -10,5 +10,6 @@ namespace DataAccess.Abstract
 {
     public interface ISpecificationDAL : IRepositoryBase<Specification>
     {
+        void AddSpecification(int productId, List<Specification> specifications);
     }
 }

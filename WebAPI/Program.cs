@@ -1,10 +1,12 @@
 using Business.Consumer;
 using Business.DependencyResolver;
+using DataAccess.DataHelper;
 using Entities.SharedModels;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddServiceRegistration();
 
@@ -13,7 +15,7 @@ builder.Services.AddMassTransit(config =>
     config.AddConsumer<ReceiveEmailConsumer>();
     config.UsingRabbitMq((ctx, cfg) =>
     {
-        cfg.Host("amqps://dgonmxbi:NxJ019hezv0Bkb7pGBzaWtBiBfGULV6V@puffin.rmq2.cloudamqp.com/dgonmxbi");
+        cfg.Host("amqp://guest:guest@localhost:5672");
         cfg.Message<SendEmailCommand>(x => x.SetEntityName("SendEmailCommand"));
         cfg.ReceiveEndpoint("send-email-command", c =>
         {
@@ -59,6 +61,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    //DataSeed.AddData();
     app.UseSwagger();
     app.UseSwaggerUI();
 }

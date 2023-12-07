@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult Register([FromBody]RegisterDTO registerDTO)
+        public async Task<IActionResult> Register([FromBody]RegisterDTO registerDTO)
         {
-            var result = _userService.Register(registerDTO);
+            var result = await _userService.Register(registerDTO);
             if(result.Success)
                 return Ok(result);
 
@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPost("verifypassword")]
-        public IActionResult VerifyPassword(string email, string token)
+        public IActionResult VerifyEmail(string email, string token)
         {
             var result = _userService.VerifyEmail(email, token);
             if(result.Success)

@@ -47,7 +47,7 @@ namespace Business.Concrete
             return new SuccessResult(token);
         }
 
-        public IResult Register(RegisterDTO registerDTO)
+        public async Task<IResult> Register(RegisterDTO registerDTO)
         {
             var result = BusinessRules.CheckLogic(CheckUserEmailExists(registerDTO.Email),
                 CheckUserPasswordConfirm(registerDTO.Password, registerDTO.ConfirmPassword));
@@ -71,7 +71,8 @@ namespace Business.Concrete
                 Token = map.Token,
                 Email = map.Email
             };
-            _publishEndpoint.Publish<SendEmailCommand>(sendEmailCommand);
+
+            await _publishEndpoint.Publish<SendEmailCommand>(sendEmailCommand);
             return new SuccessResult("Registerid Successfully");
         }
 
@@ -88,7 +89,7 @@ namespace Business.Concrete
                 _userDAL.Update(user);
                 return new SuccessResult();
             }
-            return new ErrorResult(" 1 dene message");
+            return new ErrorResult("1 dene message");
         }
 
         private IResult CheckUserEmailExists(string email)
@@ -138,6 +139,12 @@ namespace Business.Concrete
             if (password != confirmPassword)
                 return new ErrorResult();
             return new SuccessResult();
+        }
+
+        public IDataResult<User> GetUser(int userId)
+        {
+            var result = _userDAL.GetUserOrders(userId);
+            return new SuccessDataResult<User>(result);
         }
     }
 }

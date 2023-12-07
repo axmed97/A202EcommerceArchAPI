@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
 using Business.Abstract;
 using Core.Utilities.Results.Abstract;
+using Core.Utilities.Results.Concrete.ErrorResults;
 using Core.Utilities.Results.Concrete.SuccessResults;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs.ProductDTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -17,16 +13,20 @@ namespace Business.Concrete
     {
         private readonly IProductDAL _productDAL;
         private readonly IMapper _mapper;
-        public ProductManager(IProductDAL productDAL, IMapper mapper)
+        private readonly ISpecificationService _specificationService;
+        public ProductManager(IProductDAL productDAL, IMapper mapper, ISpecificationService specificationService)
         {
             _productDAL = productDAL;
             _mapper = mapper;
+            _specificationService = specificationService;
         }
 
         public IResult AddProduct(ProductCreateDTO productCreateDTO)
         {
             var map = _mapper.Map<Product>(productCreateDTO);
+            map.CreatedDate = DateTime.Now;
             _productDAL.Add(map);
+            _specificationService.AddSpecificationProduct(map.Id, productCreateDTO.Specifications);
             return new SuccessResult("Product created Successfully");
         }
 
@@ -37,6 +37,16 @@ namespace Business.Concrete
             _productDAL.Update(product);
             return new SuccessResult("Product status changed!");
 
+        }
+
+        public IDataResult<bool> CheckProductCount(List<int> productIds)
+        {
+            var products = _productDAL.GetAll(x => productIds.Contains(x.Id));
+
+            if(products.Any(x => x.Quantity == 0))
+                return new ErrorDataResult<bool>(false);
+            else
+                return new SuccessDataResult<bool>(true);
         }
 
         public IResult DeleteProduct(int productId)
@@ -53,6 +63,19 @@ namespace Business.Concrete
 
             var map = _mapper.Map<List<ProductFilterDTO>>(producs);
             return new SuccessDataResult<List<ProductFilterDTO>>(map);
+        }
+        public IDataResult<ProductGetDTO> GetProduct(int productId)
+        {
+            var product = _productDAL.GetProduct(productId);
+            var map = _mapper.Map<ProductGetDTO>(product);
+            map.CategoryName = product.Category.CategoryName;
+            return new SuccessDataResult<ProductGetDTO>(map);
+        }
+
+        public IResult RemoveProductStockCount(List<ProductDecrementQuantityDTO> productDecrementQuantityDTOs)
+        {
+            _productDAL.RemoveProductCount(productDecrementQuantityDTOs);
+            return new SuccessResult();
         }
 
         public IResult UpdateProduct(ProductUpdateDTO productUpdateDTO)

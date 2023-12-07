@@ -1,6 +1,7 @@
 ﻿using Core.Configuration;
 using Core.Entities.Concrete;
 using Entities.Concrete;
+using Entities.DTOs.UserDTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.SQLServer
@@ -19,5 +20,10 @@ namespace DataAccess.Concrete.SQLServer
         public DbSet<AppRole> AppRole { get; set; }
         public DbSet<AppUserRole> AppUserRoles { get; set; }
         public DbSet<WishList> WishLists { get; set; }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    modelBuilder.Entity<UserOrderDTO>().ToView(null);
+        //}
     }
 }

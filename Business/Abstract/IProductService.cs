@@ -15,5 +15,8 @@ namespace Business.Abstract
         IResult ChangeProductStatus(int productId, bool status);
         IResult DeleteProduct(int productId);
         IDataResult<List<ProductFilterDTO>> FilterProductsList(int categoryId, decimal minPrice, decimal maxPrice);
+        IDataResult<ProductGetDTO> GetProduct(int productId);
+        IDataResult<bool> CheckProductCount(List<int> productIds);
+        IResult RemoveProductStockCount(List<ProductDecrementQuantityDTO> productDecrementQuantityDTOs);
     }
 }

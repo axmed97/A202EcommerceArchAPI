@@ -24,6 +24,12 @@ namespace Business.DependencyResolver
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<IProductDAL, EFProductDAL>();
 
+            services.AddScoped<ISpecificationService, SpecificationManager>();
+            services.AddScoped<ISpecificationDAL, EFSpecificationDAL>();
+
+            services.AddScoped<IOrderService, OrderManager>();
+            services.AddScoped<IOrderDAL, EFOrderDAL>();
+
             services.AddScoped<IEmailHelper, EmailHelper>();
 
             var mapperConfig = new MapperConfiguration(mc =>

@@ -10,5 +10,6 @@ namespace DataAccess.Abstract
 {
     public interface IUserDAL : IRepositoryBase<User>
     {
+        User GetUserOrders(int userId);
     }
 }
