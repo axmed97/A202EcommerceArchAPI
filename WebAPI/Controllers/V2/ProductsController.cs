@@ -3,10 +3,11 @@ using Entities.DTOs.ProductDTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers.V2
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("2.0")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -15,7 +16,7 @@ namespace WebAPI.Controllers
         {
             _productService = productService;
         }
-
+        [MapToApiVersion("2.0")]
         [HttpPost("[action]")]
         public IActionResult CreateProduct(ProductCreateDTO productCreateDTO)
         {
@@ -25,6 +26,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPut("[action]")]
+        [MapToApiVersion("2.0")]
         public IActionResult UpdateProduct(ProductUpdateDTO productUpdateDTO)
         {
             var result = _productService.UpdateProduct(productUpdateDTO);
@@ -34,18 +36,21 @@ namespace WebAPI.Controllers
         }
 
         [HttpPatch("[action]")]
+        [MapToApiVersion("2.0")]
         public IActionResult ChangeStatusProduct(int Id, bool status)
         {
             var result = _productService.ChangeProductStatus(Id, status);
             return Ok(result);
         }
         [HttpDelete("[action]")]
+        [MapToApiVersion("2.0")]
         public IActionResult Delete(int Id)
         {
             var result = _productService.DeleteProduct(Id);
             return Ok(result);
         }
         [HttpGet("[action]")]
+        [MapToApiVersion("2.0")]
         public IActionResult GetAllProductFilter(int categoryId, decimal minPrice, decimal maxPrice)
         {
             var result = _productService.FilterProductsList(categoryId, minPrice, maxPrice);
@@ -55,6 +60,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("[action]/{productId}")]
+        [MapToApiVersion("2.0")]
         public IActionResult GetProductDetail(int productId)
         {
             var result = _productService.GetProduct(productId);

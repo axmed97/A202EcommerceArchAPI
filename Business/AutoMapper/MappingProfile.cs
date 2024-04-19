@@ -5,6 +5,7 @@ using Entities.DTOs.OrderDTOs;
 using Entities.DTOs.ProductDTOs;
 using Entities.DTOs.SpecificationDTOs;
 using Entities.DTOs.UserDTOs;
+using Entities.DTOs.WishListDTOs;
 
 namespace Business.AutoMapper
 {
@@ -25,6 +26,8 @@ namespace Business.AutoMapper
             CreateMap<Specification, SpecificationListDTO>();
 
             CreateMap<OrderCreateDTO, Order>();
+
+            CreateMap<AddWishlistDTO, WishList>();
 
             //CreateMap<Order, OrderUserDTO>()
             //    .ForMember(x => x.ProductName, z => z.MapFrom(y => y.Product.ProductName))

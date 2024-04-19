@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers.V2
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("2.0")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -17,7 +18,7 @@ namespace WebAPI.Controllers
         {
             _orderService = orderService;
         }
-
+        [MapToApiVersion("2.0")]
         [HttpPost("[action]")]
         public IActionResult OrderCreate(List<OrderCreateDTO> orderCreateDTO)
         {
@@ -30,7 +31,7 @@ namespace WebAPI.Controllers
             _orderService.CreateOrder(user, orderCreateDTO);
             return Ok();
         }
-
+        [MapToApiVersion("2.0")]
         [HttpGet("[action]")]
         public IActionResult GetUserOrder()
         {

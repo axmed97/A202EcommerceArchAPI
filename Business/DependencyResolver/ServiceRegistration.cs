@@ -30,6 +30,9 @@ namespace Business.DependencyResolver
             services.AddScoped<IOrderService, OrderManager>();
             services.AddScoped<IOrderDAL, EFOrderDAL>();
 
+            services.AddScoped<IWishlistService, WishListManager>();
+            services.AddScoped<IWishlistDAL, EFWishlistDAL>();
+
             services.AddScoped<IEmailHelper, EmailHelper>();
 
             var mapperConfig = new MapperConfiguration(mc =>
@@ -39,6 +42,7 @@ namespace Business.DependencyResolver
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+
         }
     }
 }
